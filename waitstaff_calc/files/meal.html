@@ -1,0 +1,48 @@
+<section class="meal_unit" ng-controller='mealctrl'>
+ <div class="meal_wrap">
+  <div class="meal_data">
+    <div class="meal_text">
+        <p class="mini_wrap">Enter the Meal Details</p>
+    </div><!-- . meal_text - -->
+    <div class="meal_input">
+        <table>
+        <tr>
+          <td class="label">Base Meal Price $</td>
+          <td class="input"><input type="text" ng-model="mealDetails.price" /></td>
+        </tr>
+        <tr>
+          <td class="label">Tax Rate %</td>
+          <td class="input"><input type="text" ng-model="mealDetails.tax"  /></td>
+        </tr>
+        <tr>
+          <td class="label">Tip Percentage %</td>
+          <td class="input"><input type="text" ng-model="mealDetails.tip" /></td>
+        </tr>
+        </table>
+    </div><!-- . meal_input - -->
+  </div><!-- . meal_data - -->
+ </div><!-- . meal_wrap - -->
+    <div class="item" style="text-align:right"><input type="submit" value="Submit" ng-click="submitOrder()" /></div>
+    <div class="item" style="text-align:right"><input type="submit" value="Cancel" ng-click="cancelOrder()" /></div>
+</section><!-- . meal_unit - -->
+
+<section class="bill_unit">
+ <div class="bill_wrap">
+  <div class="bill_data">
+    <div class="bill_text">
+        <p class="mini_wrap">Customer Charges</p>
+        <div class="add_bill">
+            <div class="data_name">Subtotal:
+                <p class="data_num" ng-model="subTotal">{{ subTotal | currency }}</p>
+            </div>
+            <div class="data_name">Tip:
+                <p class="data_num" ng-model="mealTip">{{ mealTip | currency }}</p>
+            <div>
+            <div class="data_name">Total:
+                <p class="data_num" ng-model="mealTotal">{{ mealTotal | currency }}</p>
+            </div>
+        </div>
+    </div><!-- . bill_text - -->
+  </div><!-- . bill_data - -->
+ </div><!-- . bill_wrap - -->
+</section><!-- . bill_unit - -->

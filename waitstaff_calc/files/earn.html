@@ -1,0 +1,25 @@
+
+<section class="earn_unit" ng-controller='earnctrl'>
+ <div class="earn_wrap">
+  <div class="earn_data">
+    <div class="earn_text">
+        <p class="mini_wrap">My Earnings Info</p>
+        <div class="earn_info">
+            <div class="data_name">Tip Total:
+                <p class="data_num" ng-model="totalTip">{{ totalTip | currency }}</p>
+            </div>
+            <div class="data_name">Meal Count:
+                <p class="data_num" ng-model="mealCount">{{ mealCount }}</p>
+            <div>
+            <div class="data_name">Average Tip Per Meal:
+                <p class="data_num" ng-model="avgTip">{{ totalTip/mealCount | currency }}</p>
+            </div>
+        </div>
+    </div><!-- . earn_text - -->
+  </div><!-- . earn_data - -->
+ </div><!-- . earn_text - -->
+</section><!-- . earn_unit - -->
+
+<section class="reset_item">
+ <div style="text-align:right"><input type="submit" ng-click="reset()" value="Reset" /></div>
+</section><!-- . reset_item - -->

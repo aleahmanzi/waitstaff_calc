@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="demo">
+<head>
+    <meta charset="UTF-8">
+    <title>Waitstaff Calculator</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script> 
+     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.10/angular.min.js"></script>
+     <script src="https://code.angularjs.org/1.4.10/angular-animate.js" type="text/javascript"></script>
+      <script src="https://code.angularjs.org/1.4.10/angular-route.js" type="text/javascript"></script>
+  
+</head>
+<style>
+.full_wrap { outline: 0px solid #eee; width: 600px; margin: 0 auto; } 
+.hero_wrap { outline: 0px solid blue; width: 600px; }
+.hero_text { text-align: center; font-size: 40px; }
+
+.meal_unit { outline: 1px solid #999; width: 300px; height: 300px; position: relative; left: 125px; top: 25px; display: inline-block; }
+.mini_wrap { border-bottom: 1px solid #999; text-align: center; font-size: 20px; }
+.item { display: inline-block; position: relative; left: 100px; top: 75px; }
+
+.bill_unit { outline: 1px solid #999; width: 250px; position: relative; left: 450px; bottom: 295px;}
+.earn_unit { outline: 1px solid #999; width: 250px; position: relative; left: 275px }
+.add_bill, .earn_info { outline: 0px solid red; width: 200px; position: relative; left: 25px; }
+.data_name { text-align: right; }
+.data_num { display: inline-block; text-align: left; }
+
+.reset_item { position: relative; right: 150px; }
+.link_wrap a { outline: 0px solid blue; position: relative; left: 275px; padding: 5px; }
+
+.home_wrap { width: 600px; margin: auto; }
+
+.loading { position:relative; height:100%; }
+.loading:before { position:absolute; content:""; left:0; bottom:0; right:0; top:0; z-index:1000; background:rgba(255,255,255,0.9) no-repeat center center; background-image: url('../pics/loading-animation.gif'); }
+.animate-view-container { position:relative; min-height: 100%;}
+.animate-view.ng-enter,
+.animate-view.ng-leave {transition:1s linear all; position:absolute; top:0; left:0; right:0; bottom:0; background:#eee; }
+.animate-view.ng-enter { opacity:0; z-index:100; }
+.animate-view.ng-enter.ng-enter-active { opacity:1; }
+.animate-view.ng-leave { opacity:1; z-index:99; }
+.animate-view.ng-leave.ng-leave-active { opacity:0; }
+
+</style>
+
+<script>
+var demo = angular.module('demo', ['ngRoute', 'ngAnimate']);
+    demo.config(['$routeProvider', function($routeProvider){
+        $routeProvider
+        .when('/', {
+            templateUrl: './home.html',
+            controller: 'homectrl'
+        })
+        .when('/meal', {
+            templateUrl: './meal.html',
+            controller: 'mealctrl'
+        })
+        .when('/earn', {
+            templateUrl: './earn.html',
+            controller: 'earnctrl'
+        })
+        .when('/error', {
+            template: '<p>Error - Page Not Found</p>'
+        });
+    }]); /// - config
+
+    demo.controller('homectrl', function($scope){
+            //blank
+    });/// - homectrl
+
+    demo.controller('mealctrl', function($scope){
+        $scope.mealCount = 0;
+        $scope.totalTip = 0;
+
+        $scope.mealDetails={
+            price: '',
+            tax: '',
+            tip: ''
+        };
+
+        $scope.submitOrder = function(){
+        //console.log("submit");
+        $scope.mealCount = Number($scope.mealCount) + 1;
+        $scope.subTotal = Number($scope.mealDetails.price) + Number($scope.mealDetails.tax);
+        $scope.mealTip = Number($scope.subTotal) * Number($scope.mealDetails.tip/100);
+        $scope.mealTotal = Number($scope.subTotal) + Number($scope.mealTip);
+        $scope.totalTip += Number($scope.mealTip);
+        console.log($scope.mealDetails.price);
+        $scope.mealDetails.price = '';
+        $scope.mealDetails.tax = '';
+        $scope.mealDetails.tip = '';
+        };
+
+        $scope.cancelOrder = function(){    
+            console.log("cancel")
+            $scope.mealDetails.price = '';
+            $scope.mealDetails.tax = '';
+            $scope.mealDetails.tip = '';
+        };
+        }); /// - mealctrl
+
+    demo.controller('earnctrl', function($scope){
+        $scope.reset = function(){
+        console.log("reset")
+        $scope.mealDetails.price = '';
+        $scope.mealDetails.tax = '';
+        $scope.mealDetails.tip = '';
+        $scope.subTotal = "";
+        $scope.mealTip = "";
+        $scope.mealTotal = "";
+        $scope.mealCount = "";
+        $scope.totalTip = "";
+        totalTip = 0;
+        tipTotals = [];
+        };
+    });/// - earnctrl
+
+demo.run(function($rootScope, $location, $timeout) {
+  $rootScope.$on('$routeChangeError', function() {
+    $location.path("/error");
+  });
+  $rootScope.$on('$routeChangeStart', function() {
+    $rootScope.isLoading = true;
+  });
+  $rootScope.$on('$routeChangeSuccess', function() {
+    $timeout(function() {
+      $rootScope.isLoading = false;
+    }, 1000);
+  });/// - run
+});
+
+</script>
+
+<body ng-class="{loading: isLoading}">
+<div class="full_wrap">
+<header>
+ <div class="hero_wrap">
+  <div class="hero_data">
+    <div class="hero_text">
+        <p>Waitstaff Calculator</p>
+    </div><!-- . hero_text - -->
+  </div><!-- . hero_data - -->
+ </div><!-- . hero_wrap - -->
+</header>
+</div><!-- . full_wrap - -->
+
+<div class="link_wrap">
+ <div class="link_data">
+  <a href="#/">Home</a>
+  <a href="#/meal">New Meal</a>
+  <a href="#/earn">My Earnings</a>
+ </div><!-- . link_data - -->
+</div><!-- . link_wrap - -->  
+
+<div class="animatev-view-container">
+ <div ng-view class="view animate-view"></div>
+</div><!-- . animate-view-container - -->  
+</body>
+</html>
